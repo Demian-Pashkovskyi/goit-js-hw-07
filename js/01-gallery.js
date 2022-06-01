@@ -1,14 +1,14 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
 const galleryEl = document.querySelector('.gallery');
+let modalImage;
+
 const bodyEl = document.querySelector('body');
-// let modalImage;
 
 
 const galleryMarkup = galleryItems.map(
-({ preview, original, description }) => 
+({ preview, original, description }, alt) => 
 	`<div class="gallery__item">
 <a class="gallery__link" href="${original}">
    <img
@@ -22,7 +22,33 @@ const galleryMarkup = galleryItems.map(
 	`,)
 .join('');
 
-console.log(galleryMarkup);
 galleryEl.insertAdjacentHTML('beforeend', galleryMarkup);
 
 
+
+const onGalleryClick = event => {
+	event.preventDefault();
+
+	if (event.target.nodeName !== "IMG")
+	return;
+	onOpenModal(event.target.dataset.source);
+};
+
+galleryEl.addEventListener('click', onGalleryClick);
+
+
+const onCreateModal = img => basicLightbox.create(`<img src="${img}" width="1280" alt="${img}">`);
+
+
+const onOpenModal = img => {
+	modalImage = onCreateModal(img);
+	modalImage.show();
+	console.log("Open modal");
+	document.addEventListener("keyup", onKeyPress);
+};
+
+const onKeyPress = event => {
+	if (event.code === "Escape") modalImage.close();
+	console.log("Close modal with escape");
+	document.removeEventListener("keyup", onKeyPress);
+};	
