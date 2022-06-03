@@ -44,11 +44,13 @@ const onOpenModal = img => {
 	modalImage = onCreateModal(img);
 	modalImage.show();
 	console.log("Open modal");
-	document.addEventListener("keyup", onKeyPress);
+	document.addEventListener("keydown", onKeyPress);
 };
 
 const onKeyPress = event => {
-	if (event.code === "Escape") modalImage.close();
+	if (event.code !== "Escape") {
+		return;
+	}
 	console.log("Close modal with escape");
-	document.removeEventListener("keyup", onKeyPress);
+	modalImage.close()
 };	
